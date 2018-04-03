@@ -3,7 +3,7 @@
 import { bns } from 'biggystring'
 import type { EdgeDenomination, EdgeTransaction } from 'edge-core-js'
 import React, { Component } from 'react'
-import { ActivityIndicator, Animated, Image, ScrollView, TouchableHighlight, TouchableOpacity, View, SectionList } from 'react-native'
+import { ActivityIndicator, Animated, Image, TouchableHighlight, TouchableOpacity, View, SectionList } from 'react-native'
 // import Contacts from 'react-native-contacts'
 // import Permissions from 'react-native-permissions'
 import { Actions } from 'react-native-router-flux'
@@ -260,7 +260,7 @@ export default class TransactionList extends Component<Props, State> {
       <SafeAreaView>
         <View style={[{ width: '100%', height: PLATFORM.usableHeight + PLATFORM.toolbarHeight }]}>
           <Gradient style={styles.gradient} />
-          <ScrollView style={[styles.scrollView]}>
+          <View style={[styles.scrollView]}>
             <View style={[styles.container]}>
               <Animated.View style={[{ height: this.state.balanceBoxHeight }]}>
                 <Gradient style={[styles.currentBalanceBox]}>
@@ -350,7 +350,7 @@ export default class TransactionList extends Component<Props, State> {
                 />
               </View>
             </View>
-          </ScrollView>
+          </View>
           {this.renderDropUp()}
         </View>
       </SafeAreaView>
