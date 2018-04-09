@@ -145,7 +145,7 @@ export const setEnabledTokens = (walletId: string, enabledTokens: Array<string>,
     .then(() => {
       // let Redux know it was completed successfully
       dispatch(setTokensSuccess())
-      dispatch(updateWalletEnabledTokens(walletId, enabledTokens))
+      dispatch(updateWalletEnabledTokens(wallet, enabledTokens))
       // refresh the wallet in Redux
       dispatch(refreshWallet(walletId))
     })
@@ -186,7 +186,7 @@ export const getEnabledTokens = (walletId: string) => async (dispatch: Dispatch,
     }
     await Promise.all(promiseArray)
     // now reflect that change in Redux's version of the wallet
-    dispatch(updateWalletEnabledTokens(walletId, tokensToEnable))
+    dispatch(updateWalletEnabledTokens(wallet, tokensToEnable))
   } catch (e) {
     dispatch(displayErrorAlert(e.message))
   }
@@ -362,7 +362,7 @@ export const deleteCustomToken = (walletId: string, currencyCode: string) => (di
       coreWalletsToUpdate.forEach(wallet => {
         dispatch(upsertWallet(wallet))
         const newEnabledTokens = _.difference(guiWallets[wallet.id].enabledTokens, [currencyCode])
-        dispatch(updateWalletEnabledTokens(wallet.id, newEnabledTokens))
+        dispatch(updateWalletEnabledTokens(wallet, newEnabledTokens))
       })
     })
     .then(() => {
@@ -397,10 +397,12 @@ export const setTokensSuccess = () => ({
   type: MANAGE_TOKENS_SUCCESS
 })
 
-export const updateWalletEnabledTokens = (walletId: string, tokens: Array<string>) => ({
-  type: UPDATE_WALLET_ENABLED_TOKENS,
-  data: { walletId, tokens }
-})
+export const updateWalletEnabledTokens = (wallet: EdgeCurrencyWallet, tokens: Array<string>) => {
+  return {
+    type: UPDATE_WALLET_ENABLED_TOKENS,
+    data: { wallet, tokens }
+  }
+}
 
 export const editCustomTokenStart = () => ({
   type: EDIT_CUSTOM_TOKEN_START

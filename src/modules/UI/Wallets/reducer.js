@@ -59,12 +59,18 @@ export const byId = (state: WalletByIdState = {}, action: Action) => {
     }
 
     case ACTION.UPDATE_WALLET_ENABLED_TOKENS: {
-      const { walletId, tokens } = action.data
+      const { wallet, tokens } = action.data
+      const walletId = wallet.id
+      const nativeBalances = state[walletId].nativeBalances
+      for (const token of tokens) {
+        nativeBalances[token] = wallet.getBalance({currencyCode: token})
+      }
       if (state[walletId] !== undefined) {
         return {
           ...state,
           [walletId]: {
             ...state[walletId],
+            nativeBalances,
             enabledTokens: tokens
           }
         }
